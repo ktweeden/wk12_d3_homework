@@ -20,6 +20,7 @@ const populateBeer = function() {
   const beerListContainer = document.querySelector('#beer-list');
   console.log(beerArray);
   beerArray.forEach(beer => renderBeer(beerListContainer, beer));
+  populateBeerSelector();
 }
 
 const renderBeer = function(parent, beerObject) {
@@ -36,4 +37,28 @@ const renderBeer = function(parent, beerObject) {
   container.appendChild(image);
 
   parent.appendChild(container);
+}
+
+const populateBeerSelector = function() {
+  const selector = document.querySelector('#beer-selector')
+  let index = 0;
+  beerArray.forEach(beer => {
+    createBeerSelection(selector, beer, index);
+    index ++;
+  });
+}
+
+const createBeerSelection = function(parent, beer, index) {
+  const option = document.createElement('option');
+  option.value = index;
+  option.textContent = beer.name;
+  parent.appendChild(option);
+  parent.onchange=onBeerOptionListener;
+}
+
+const onBeerOptionListener = function() {
+  const beer = beerArray[this.value];
+  const beerWrapper = document.querySelector('#beer-list');
+  beerWrapper.innerHTML = '';
+  renderBeer(beerWrapper, beer);
 }
